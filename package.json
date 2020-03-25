@@ -1,0 +1,43 @@
+{
+  "name": "nodejs-hw-3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon server/server.js",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run server \" \"npm run client \""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BogUkraine/nodejs-hw-3.git"
+  },
+  "keywords": [
+    "js",
+    "javascript",
+    "react",
+    "nodejs",
+    "node",
+    "mongodb",
+    "mongoose",
+    "jwt"
+  ],
+  "author": "Bohdan Lysov <BogUkraine@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BogUkraine/nodejs-hw-3/issues"
+  },
+  "homepage": "https://github.com/BogUkraine/nodejs-hw-3#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "config": "^3.3.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
