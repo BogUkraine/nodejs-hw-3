@@ -45,3 +45,13 @@ body {
     outline: 0;
     margin: 10px 0;
 }
+
+a:visited, a:hover, a {
+    color: $font-color;
+    text-decoration: none;
+}
+
+.fa, .fas, .fab {
+    cursor: pointer;
+    font-size: 24px;
+}

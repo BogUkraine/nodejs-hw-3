@@ -1,0 +1,85 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    height: $header-height;
+    background-color: $background-color-dark;
+    padding: 0 20px;
+    box-sizing: border-box;
+
+    &__nav {
+        flex: 3;
+        font-size: $font-size-large;
+        min-width: $nav-min-width;
+        width: $nav-width;
+    }
+
+    &__logo {
+        margin-right: 40px;
+    }
+
+    &__logout {
+        flex: 1;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: $header-logout-width;
+        max-width: $header-logout-width;
+        width: $header-logout-width;
+        height: $header-height;
+        font-size: $font-size-big;
+        margin-left: 20px;
+
+        &:hover {
+            color: $danger-color;
+        }
+    }
+}
+
+.logo {
+    flex: 1;
+    min-width: $logo-width;
+    max-width: $logo-width;
+    width: $logo-width;
+    height: $header-height;
+
+    &__image {
+        width: 100%;
+        height: $header-height;
+        object-fit: contain;
+    }
+}
+
+.nav {
+    display: flex;
+    justify-content: flex-start;
+    &__link {
+        position: relative;
+        display: flex;
+        flex: 1;
+        max-width: $link-max-width;
+        min-width: $link-min-width;
+        justify-content: center;
+        align-items: center;
+
+        &:after {
+            content: '';
+            position: absolute;
+            opacity: 0;
+            width: 0%;
+            height: 2px;
+            left: 0px;
+            bottom: 10px;
+            background: $font-color;
+            transition: all 0.3s;
+        }
+
+        &:hover:after {
+            opacity: 1;
+            width: 100%;
+        }
+    }  
+}

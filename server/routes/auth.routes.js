@@ -53,8 +53,8 @@ router.post(
             });
         };
 
-        const { login, password } = req.body;
-        const user = await User.findOne({ login });
+        const { login, password, role } = req.body;
+        const user = await User.findOne({ login, role });
         if(!user) {
             return res.status(400).json({ message: "This user doesn't exist" });
         };

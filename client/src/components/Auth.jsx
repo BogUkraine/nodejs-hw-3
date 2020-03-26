@@ -42,7 +42,7 @@ const Auth = () => {
     const loginHandler = async () => {
         if(isActiveShipper) {
             try {
-                const data = await request('/api/auth/login', 'POST', {...form});
+                const data = await request('/api/auth/login', 'POST', {...form, role: 'Shipper'});
                 auth.login(data.token, data.userId, data.role, data.login);
             }
             catch(error){
@@ -51,7 +51,7 @@ const Auth = () => {
         }
         else {
             try {
-                const data = await request('/api/auth/login', 'POST', {...form});
+                const data = await request('/api/auth/login', 'POST', {...form, role: 'Driver'});
                 auth.login(data.token, data.userId, data.role, data.login);
             }
             catch(error){
@@ -79,9 +79,9 @@ const Auth = () => {
         if(error !== null) {
             warningRef.current.className = 'warning warning--visible';
             setTimeout(() => {
-                warningRef.current.className = 'warning warning--invisible';
+                warningRef.current ? warningRef.current.className = 'warning warning--invisible' : console.log('memory leak');
                 clearError();
-            }, 5000);
+            }, 3000);
         }
     }, [error, clearError]);
 
