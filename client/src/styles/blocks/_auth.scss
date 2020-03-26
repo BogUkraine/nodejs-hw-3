@@ -1,0 +1,13 @@
+.auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $background-color;
+    width: 100%;
+    height: $screen-height;
+
+    &__modal {
+        width: $auth-modal-width;
+        height: $auth-modal-height;
+    }
+}

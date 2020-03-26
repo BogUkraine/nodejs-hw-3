@@ -1,0 +1,47 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-size: $font-size-normal;
+    color: $font-color;
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    overflow: hidden;
+}
+
+.button {
+    cursor: pointer;
+    outline: 0;
+    width: $button-width;
+    height: $button-height;
+    color: $font-color;
+    background-color: $button-background-color;
+    font-size: $button-text-size;
+    border: 0;
+    transition: all ease 0.3s;
+
+    &:hover {
+        background-color: $button-background-color-hover;
+    }
+
+    &:disabled {
+        cursor: initial;
+        background-color: $button-disabled-color;
+    }
+
+    &--red {
+        background-color: $button-warning-background-color;
+    }
+}
+
+.field {
+    width: 100%;
+    box-sizing: border-box;
+    height: 30px;
+    background-color: transparent;
+    font-size: 18px;
+    color: $font-color;
+    padding: 0 10px;
+    border: 0;
+    border-bottom: 2px solid $field-border-color;
+    outline: 0;
+    margin: 10px 0;
+}
