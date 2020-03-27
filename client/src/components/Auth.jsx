@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect , useRef } from 'react';
 import useHttp from '../hooks/http.hook';
 import AuthContext from '../context/AuthContext';
+import Warning from './Warning';
 
 const Auth = () => {
     const auth = useContext(AuthContext);
@@ -127,9 +128,7 @@ const Auth = () => {
                         >Sign in</button>
                 </div>
             </div>
-            <div className="warning warning--invisible" ref={warningRef}>
-                {error}
-            </div>
+            <Warning referance={warningRef} error={error}/>
         </div>
     )
 }

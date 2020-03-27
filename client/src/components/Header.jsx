@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
-import AuthContext from '../../context/AuthContext';
+import AuthContext from '../context/AuthContext';
 
-import logo from '../../images/freight.png';
+import logo from '../images/freight.png';
 
 const Header = () => {
     const auth = useContext(AuthContext);

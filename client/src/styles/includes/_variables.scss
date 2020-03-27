@@ -34,6 +34,7 @@ $warning-width: 200px;
 $warning-height: 100px;
 $warning-color: #ff8800;
 $danger-color: red;
+$color-success: green;
 
 //header 
 $header-height: 60px;
@@ -47,3 +48,21 @@ $link-min-width: 100px;
 // home
 $home-height: calc(100vh - 60px);
 $profile-height: calc(100vh - 60px);
+
+//profile
+$profile-wrapper-width: calc(100vw - 320px);
+$driver-truck-description-height: 100px;
+$driver-truck-max-width: 540px;
+$driver-truck-min-width: 480px;
+
+//sidebar
+$sidebar-width: 320px;
+$sidebar-photo-height: 300px;
+$sidebar-photo-width: 250px;
+
+//trucks
+$trucks-height: 400px;
+$trucks-item-min-width: 250px;
+$trucks-item-max-width: 300px;
+$truck-icon-size: 100px;
+$trucks-description-height: 300px;

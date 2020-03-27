@@ -1,7 +1,13 @@
 .home {
     width: 100%;
+    padding: 20px;
     position: absolute;
     top: $header-height;
     height: $home-height;
     background-color: $background-color;
+    box-sizing: border-box;
+
+    &__title {
+        text-align: center;
+    }
 }

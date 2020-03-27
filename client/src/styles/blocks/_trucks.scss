@@ -1,0 +1,58 @@
+.trucks {
+    width: 100%;
+    height: $trucks-height;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+
+    &__item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        height: $trucks-height;
+        background-color: $background-color-dark;
+        min-width: $trucks-item-min-width;
+        max-width: $trucks-item-max-width;
+        margin: 0 10px;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    &__description {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 100%;
+        height: $trucks-description-height;
+    }
+
+    &__title {
+        text-align: center;
+        margin-top: 0;
+    }
+
+    &__characteristic {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    &__icon {
+        font-size: $truck-icon-size;
+
+        &--normal {
+            font-size: 60px;
+        }
+    }
+}
+
+.characteristic {
+    display: flex;
+    flex-direction: column;
+
+    &__item {
+        margin: 6px 0;
+    }
+}

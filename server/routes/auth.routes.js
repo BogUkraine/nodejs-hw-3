@@ -31,10 +31,10 @@ router.post(
         const user = new User({ login, password: hashedPassword, role });
         await user.save();
 
-        res.status(201).json('User was successfully registered');
+        return res.status(201).json('User was successfully registered');
     }
     catch (error) {
-        res.status(500).json({message: 'User wasn\'t registered', error: error});
+        return res.status(500).json({message: 'User wasn\'t registered', error: error});
     };
 });
 
@@ -69,10 +69,10 @@ router.post(
             config.get('jwtSecret'),
             { expiresIn: '1h' }
         );
-        res.status(201).json({ token, userId: user.id, login: user.login, role: user.role });
+        return res.status(201).json({ token, userId: user.id, login: user.login, role: user.role });
     }
     catch (error) {
-        res.status(500).json({message: 'User wasn\'t registered', error: error});
+        return res.status(500).json({message: 'User wasn\'t registered', error: error});
     };
 });
 

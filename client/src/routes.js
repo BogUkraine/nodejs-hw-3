@@ -2,11 +2,11 @@ import React from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 
 import Auth from './components/Auth';
-import HomeShipper from './components/Home/HomeShipper';
-import ProfileShipper from './components/Profile/ProfileShipper';
-import HomeDriver from './components/Home/HomeDriver';
-import ProfileDriver from './components/Profile/ProfileDriver';
-import Header from './components/Header/Header';
+import HomeShipper from './components/HomeShipper';
+import ProfileShipper from './components/ProfileShipper';
+import HomeDriver from './components/HomeDriver';
+import ProfileDriver from './components/ProfileDriver';
+import Header from './components/Header';
 
 const useRoutes = (isAuthenticated, role) => {
     if (isAuthenticated && role === 'Shipper') {

@@ -1,0 +1,83 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 0;
+    width: $sidebar-width;
+    background-color: $background-color-dark;
+    height: $profile-height;
+
+    &__main {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    &__photo {
+        position: relative;
+        width: $sidebar-photo-width;
+        height: $sidebar-photo-height;
+
+        &:hover::after {
+            content: '';
+            position: absolute;
+            top: 150px;
+            right: 125px;
+            height: 1px;
+            width: 10px;
+            border: 10px solid black;
+        }
+    }
+
+    &__login {
+        width: 100%;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    &__container {
+        display: flex;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+    }
+
+    &__changer {
+        &--invisible {
+            display: none;
+        }
+
+        &--visible {
+            display: flex;
+        }
+    }
+
+    &__modal {
+        width: 90%;
+        &--invisible {
+            display: none;
+        }
+
+        &--visible {
+            display: block;
+        }
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 20px;
+    }
+
+    &__delete {
+        position: absolute;
+        right: 125px;
+        bottom: 50px;
+    }
+
+    &__file {
+        display: none;
+    }
+}

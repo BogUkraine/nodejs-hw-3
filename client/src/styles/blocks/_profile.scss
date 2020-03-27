@@ -4,4 +4,20 @@
     top: $header-height;
     height: $home-height;
     background-color: $background-color;
+
+    &__wrapper {
+        width: $profile-wrapper-width;
+        height: $home-height;
+        padding: 20px;
+        box-sizing: border-box;
+        overflow-y: auto;
+    }
+
+    &__title {
+        margin-top: 0;
+    }
+
+    &__trucks {
+        margin-bottom: 20px;
+    }
 }

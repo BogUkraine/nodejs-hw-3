@@ -3,6 +3,7 @@ import { useState, useCallback } from 'react';
 const useHttp = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [successfulResponse, setSuccessfulResponse] = useState(null);
     const request = useCallback(async (url, method = 'GET', body = null, headers = {}) => {
         setLoading(true);
         try {
@@ -17,18 +18,20 @@ const useHttp = () => {
             if(!response.ok) {
                 throw new Error(data.message || 'Something went wrong');
             }
+            setSuccessfulResponse(data.message);
             setLoading(false);
             return data;
         }
         catch (error) {
             setLoading(false);
             setError(error.message);
-            throw error;
         }
     }, []);
 
     const clearError = useCallback(() => setError(null), []);
-    return {request, loading, error, clearError};
+    const clearSuccessfulResponse = useCallback(() => setSuccessfulResponse(null), []);
+
+    return {request, loading, error, clearError, successfulResponse, clearSuccessfulResponse};
 }
 
 export default useHttp;
