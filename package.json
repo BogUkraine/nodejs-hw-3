@@ -30,14 +30,20 @@
   },
   "homepage": "https://github.com/BogUkraine/nodejs-hw-3#readme",
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "bcryptjs": "^2.4.3",
     "config": "^3.3.0",
+    "debug": "^4.1.1",
     "express": "^4.17.1",
     "express-validator": "^6.4.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.6"
+    "mongoose": "^5.9.6",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.19.0",
     "nodemon": "^2.0.2"
   }
 }

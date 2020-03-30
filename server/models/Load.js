@@ -1,20 +1,20 @@
 const {Schema, model, Types} = require('mongoose');
 
 const schema = new Schema({
-    created_by: {type: Types.ObjectId, required: true, ref: 'User'},
-    assigned_to: {type: Types.ObjectId, required: true, ref: 'User'},
-    logs: [{
-        message: {type: String, required: true},
-        time: {type: Date, default: Date.now}}
-    ],
-    status: {type: String, required: true},
-    state: {type: String, required: true},
-    dimensions: {
-        width: {type: String, required: true},
-        length: {type: String, required: true},
-        height: {type: String, required: true},
-    },
-    payload: {type: Number, required: true},
+  created_by: {type: Types.ObjectId, required: true, ref: 'User'},
+  assigned_to: {type: Types.ObjectId, required: true, ref: 'User'},
+  logs: [{
+    message: {type: String, required: true},
+    time: {type: Date, default: Date.now}},
+  ],
+  status: {type: String, required: true},
+  state: {type: String, required: true},
+  dimensions: {
+    width: {type: String, required: true},
+    length: {type: String, required: true},
+    height: {type: String, required: true},
+  },
+  payload: {type: Number, required: true},
 });
 
 module.exports = model('Load', schema);

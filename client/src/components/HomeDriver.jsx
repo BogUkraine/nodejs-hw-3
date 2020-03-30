@@ -3,7 +3,7 @@ import React, { useRef, useContext, useEffect } from 'react';
 import useHttp from '../hooks/http.hook';
 import AuthContext from '../context/AuthContext';
 
-import Trucks from './Home/Trucks';
+import Trucks from './Home/Driver/Trucks';
 import Warning from './Warning';
 
 const HomeDriver = () => {

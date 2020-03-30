@@ -1,80 +1,119 @@
-const { Router } = require('express');
-const {check, validationResult} = require('express-validator');
+const {Router} = require('express');
+// eslint-disable-next-line new-cap
 const router = Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
-const config = require('config');
-const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth.middleware');
 
-router.put('/password', 
-    auth, 
-    [check('password', 'Password must contain at least 6 symbols').isLength(6)],
-    async (req, res) => {
-        try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(400).json({
-                    errors: errors.array(),
-                    message: 'Wrong data in field'
-                });
-            };
+const validate = require('../middleware/valid.middleware');
+const validProfile = require('../validation/profile.validation');
 
-            const password = req.body.password;
-            const id = req.user.userId;
+//* **** GET ******//
 
-            const hashedPassword = await bcrypt.hash(password, 12);
-
-            User.findByIdAndUpdate(id, {password: hashedPassword}, (err) => {
-                if(err) {
-                    return res.status(500).json({message: 'Password wasn\'t changed', err});
-                }
-                return res.status(201).json({message: 'Password was successfully changed'});
-            });
-        }
-        catch (error) {
-            return res.status(500).json({message: 'Password wasn\'t changed', error: error});
-        };
+router.get('/', auth, async (req, res) => {
+  try {
+    User.find({}, (error) => {
+      if (error) {
+        return res.status(500).json({message: 'Can not get profiles', error});
+      }
+      return res.status(201).json({message: 'Profiles was got'});
+    });
+  } catch (error) {
+    return res.status(500).json({message: 'Can not get profiles', error});
+  }
 });
 
-router.delete('/delete', 
-    auth, 
+router.get('/:id',
+    auth,
     async (req, res) => {
-        try {
-            const id = req.user.userId;
-            User.findByIdAndDelete(id, (err) => {
-                if(err) {
-                    return res.status(500).json({message: 'User wasn\'t deleted', err});
-                }
-                return res.status(201).json({message: 'User was successfully deleted'});
-            });
+      try {
+        const id = req.params.id;
+
+        User.findById(id, (err) => {
+          if (err) {
+            return res.status(500).json({message: 'Can not get profile', err});
+          }
+          return res.status(200).json({message: 'Profile was got'});
+        });
+      } catch (error) {
+        return res.status(500).json({
+          message: 'Can not get profile', error: error,
+        });
+      }
+    });
+
+//* **** PUT ******//
+
+router.put('/:id/password',
+    auth, validate(validProfile.password, 'body'),
+    async (req, res) => {
+      try {
+        const id = req.params.id;
+        const jwtId = req.user.userId;
+        if (id !== jwtId) {
+          return res.status(400).json({message: 'User is not authorized'});
         }
-        catch (error) {
-            return res.status(500).json({message: 'User wasn\'t deleted', error: error});
-        };
+
+        const password = req.body.password;
+        const hashedPassword = await bcrypt.hash(password, 12);
+
+        User.findByIdAndUpdate(id, {
+          $set: {password: hashedPassword},
+        }, (err) => {
+          if (err) {
+            return res.status(500).json({
+              message: 'Profile data wasn\'t changed', err,
+            });
+          }
+          return res.status(200).json({
+            message: 'Profile data was successfully changed',
+          });
+        });
+      } catch (error) {
+        return res.status(500).json({
+          message: 'Profile data wasn\'t changed', error: error,
+        });
+      }
+    });
+
+router.put('/:id/profilePhoto', auth, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const jwtId = req.user.userId;
+    if (id !== jwtId) {
+      return res.status(400).json({message: 'User is not authorized'});
+    }
+    return res.status(400).json({message: 'User is not authorized'});
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Profile data wasn\'t changed', error: error,
+    });
+  }
 });
-router.put('/photo', 
-    auth, 
-    async (req, res) => {
-        try {
-            const id = req.user.userId;
-            const {value, size} = req.body;
-            console.log(value,size);
 
-            if(size > 2048) {
-                return res.status(400).json({message: 'Photo weight must be less than 2 MB'})
-            };
+//* **** POST ******//
 
-            User.findByIdAndUpdate(id, {photo: value}, (err) => {
-                if(err) {
-                    return res.status(500).json({message: 'Photo wasn\'t updated', err});
-                }
-                return res.status(201).json({message: 'Photo was successfully updated'});
-            });
-        }
-        catch (error) {
-            return res.status(500).json({message: 'Photo wasn\'t updated', error: error});
-        };
+//* **** DELETE ******//
+
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const jwtId = req.user.userId;
+    if (id !== jwtId) {
+      return res.status(400).json({message: 'User is not authorized'});
+    }
+
+    User.findByIdAndDelete(id, (err) => {
+      if (err) {
+        return res.status(500).json({message: 'User wasn\'t deleted', err});
+      }
+      return res.status(200).json({message: 'User was successfully deleted'});
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: 'User wasn\'t deleted', error: error,
+    });
+  }
 });
 
 module.exports = router;

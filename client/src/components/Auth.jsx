@@ -128,7 +128,7 @@ const Auth = () => {
                         >Sign in</button>
                 </div>
             </div>
-            <Warning referance={warningRef} error={error}/>
+            <Warning referance={warningRef} message={error}/>
         </div>
     )
 }

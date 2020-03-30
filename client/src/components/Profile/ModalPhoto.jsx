@@ -8,7 +8,7 @@ const ModalPhoto = ({modalPhoto, changePhotoHandler, loading, hideModalHandler})
                     className="sidebar__changer button sidebar__changer--visible"
                     onClick={changePhotoHandler}
                     disabled={loading}>
-                    Change photo
+                        Change photo
                 </button>
                 <button
                     className="button"

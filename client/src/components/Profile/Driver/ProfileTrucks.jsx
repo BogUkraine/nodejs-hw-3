@@ -18,7 +18,7 @@ const ProfileTrucks = () => {
 
     useEffect(() => {
         getTrucks();
-    }, [shouldUpdate, getTrucks]);
+    }, [shouldUpdate]);
 
     return (
         <div className="profile__trucks">

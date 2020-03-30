@@ -41,24 +41,31 @@ const ProfileInfo = ({role}) => {
     };
 
     const handleChangePassword = async () => {
-        await request('/api/profile/password', 'PUT', {...form}, { Authorization: `Bearer ${auth.token}`});
+        await request(`/api/profile/${JSON.parse(localStorage.getItem('userData')).userId}/password`,
+        'PUT',
+        {...form},
+        { Authorization: `Bearer ${auth.token}`});
     };
 
     const handleDelete = async () => {
-        await request('/api/profile/delete', 'DELETE', null, {Authorization: `Bearer ${auth.token}`});
+        await request(`/api/profile/${JSON.parse(localStorage.getItem('userData')).userId}`,
+        'DELETE',
+        null,
+        {Authorization: `Bearer ${auth.token}`});
         auth.logout();
     };
 
     const changePhotoHandler = async () => {
-        await request(
-            '/api/profile/photo', 
-            'PUT', 
-            {
-                value: fileInput.current.value,
-                size: fileInput.current.size, 
-            },
-            {Authorization: `Bearer ${auth.token}`}
-        )
+        console.log(fileInput.current.value);
+        // await request(
+        //     '/api/profile/photo', 
+        //     'PUT', 
+        //     {
+        //         value: fileInput.current.value,
+        //         size: fileInput.current.size, 
+        //     },
+        //     {Authorization: `Bearer ${auth.token}`}
+        // )
     };
 
     const choosePhotoHandler = () => {
