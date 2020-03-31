@@ -72,8 +72,9 @@
     }
 
     &__delete {
+        z-index: 0;
         position: absolute;
-        right: 125px;
+        right: 90px;
         bottom: 50px;
     }
 

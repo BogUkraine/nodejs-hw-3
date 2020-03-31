@@ -13,52 +13,19 @@ const HomeDriver = () => {
     const auth = useContext(AuthContext);
     const { loading, request, error, clearError, successfulResponse, clearSuccessfulResponse } = useHttp();
 
-    const handleSprinterCreate = async () => {
+    const handleCreate = async (truck, name) => {
         await request(
-            '/api/trucks/add',
+            `/api/trucks/${JSON.parse(localStorage.getItem('userData')).userId}`,
             'POST',
             {
                 sizes: {
-                    width: 170,
-                    height: 250,
-                    depth: 300
+                    width: truck.sizes.width,
+                    height: truck.sizes.height,
+                    length: truck.sizes.length,
                 },
-                weight: 1700,
-                type: 'Sprinter'
-            },
-            {Authorization: `Bearer ${auth.token}`}
-        );
-    };
-
-    const handleSmallCreate = async () => {
-        await request(
-            '/api/trucks/add',
-            'POST',
-            {
-                sizes: {
-                    width: 170,
-                    height: 250,
-                    depth: 500
-                },
-                weight: 2500,
-                type: 'Small straight'
-            },
-            {Authorization: `Bearer ${auth.token}`}
-        );
-    };
-
-    const handleLargeCreate = async () => {
-        await request(
-            '/api/trucks/add',
-            'POST',
-            {
-                sizes: {
-                    width: 200,
-                    height: 350,
-                    depth: 700
-                },
-                weight: 4000,
-                type: 'Large straight'
+                weight: truck.weight,
+                type: truck.type,
+                name,
             },
             {Authorization: `Bearer ${auth.token}`}
         );
@@ -88,9 +55,7 @@ const HomeDriver = () => {
         <div className="home">
             <h2 className="home__title">You can add trucks</h2>
             <Trucks
-                handleLargeCreate={handleLargeCreate}
-                handleSmallCreate={handleSmallCreate}
-                handleSprinterCreate={handleSprinterCreate}
+                handleCreate={handleCreate}
                 loading={loading}
             />
             <Warning referance={warningRef} message={error}/>

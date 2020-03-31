@@ -12,7 +12,7 @@ const ProfileTrucks = () => {
     const [shouldUpdate, setShouldUpdate] = useState(false);
 
     const getTrucks = async () => {
-        const data = await request('/api/trucks/mytrucks', 'GET', null, {Authorization: `Bearer ${auth.token}`});
+        const data = await request('/api/trucks/', 'GET', null, {Authorization: `Bearer ${auth.token}`});
         setTrucks(data);
     };
 

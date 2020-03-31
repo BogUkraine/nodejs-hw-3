@@ -29,6 +29,10 @@ $auth-modal-height: 280px;
 $modal-header-height: 50px;
 $section-unactive-color: #435571;
 $section-height: 50px;
+$modal-width: 400px;
+$modal-left: calc(50vw - 200px);
+$modal-top: calc(50vh - 100px);
+$modal-height: 200px;
 
 //warning 
 $warning-width: 200px;
@@ -66,7 +70,7 @@ $trucks-height: 400px;
 $trucks-item-min-width: 250px;
 $trucks-item-max-width: 300px;
 $truck-icon-size: 100px;
-$trucks-description-height: 300px;
+$trucks-description-height: 340px;
 
 // loads 
 $loads-min-width: 400px;

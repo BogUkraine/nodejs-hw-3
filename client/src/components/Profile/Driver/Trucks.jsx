@@ -1,8 +1,9 @@
-import React, { useContext, useRef, useEffect } from 'react';
+import React, { useContext, useRef, useEffect, useState } from 'react';
 
 import useHttp from '../../../hooks/http.hook';
 import AuthContext from '../../../context/AuthContext';
 import Warning from '../../Warning';
+import Modal from './Modal';
 
 const iconClass = {
     'Sprinter': 'fa-truck-pickup',
@@ -10,7 +11,16 @@ const iconClass = {
     'Large straight': 'fa-truck-moving',
 }
 
-const TrucksMap = ({trucks, handleAssign, handleDelete, loading}) => {
+const TrucksMap = ({trucks, handleAssign, handleDelete, handleChange, loading}) => {
+    const [isBusy, setIsBusy] = useState(false);
+    useEffect(() => {
+        trucks.forEach((item) => {
+            if (item.status === 'OL') {
+                setIsBusy(true);
+            }
+        })
+    });
+
     return (
         trucks.map((item, index) => {
             return (
@@ -23,15 +33,16 @@ const TrucksMap = ({trucks, handleAssign, handleDelete, loading}) => {
                         <p className="driver-truck__sizes">
                             <span>Width: {item.sizes.width}</span>
                             <span>Height: {item.sizes.height}</span>
-                            <span>Depth: {item.sizes.depth}</span>
+                            <span>Length: {item.sizes.length}</span>
                         </p>
                         <p className="driver-truck__sizes">
+                            <span>Name: {item.name}</span>
                             <span>Allowing weight: {item.weight}</span>
                             <span>Status: {item.status}</span>
                         </p>
                     </div>
                     <div className="driver-truck__buttons">
-                        {!item.assigned_to
+                        {!item.assigned_to && !isBusy
                         ? <>
                             <button
                                 className="driver-truck__button button"
@@ -45,6 +56,12 @@ const TrucksMap = ({trucks, handleAssign, handleDelete, loading}) => {
                                 onClick={() => handleDelete(item._id)}>
                                     Delete
                             </button>
+                            <button
+                                className="driver-truck__button button"
+                                disabled={loading}
+                                onClick={() => handleChange(item)}>
+                                    Change
+                            </button>
                         </>
                         : null}
                     </div>
@@ -57,17 +74,29 @@ const TrucksMap = ({trucks, handleAssign, handleDelete, loading}) => {
 const Trucks = ({trucks, shouldUpdate, setShouldUpdate}) => {
     const warningRef = useRef();
     const successRef = useRef();
+    const modalRef = useRef();
     const auth = useContext(AuthContext);
     const { loading, request, error, clearError, successfulResponse, clearSuccessfulResponse } = useHttp();
+    const [itemToChange, setItemToChange] = useState({name: 'none'});
 
     const handleAssign = async (id) => {
-        await request('/api/trucks/assign', 'PUT', {truck_id: id}, {Authorization: `Bearer ${auth.token}`});
+        await request(`/api/trucks/${id}/assign`, 'PUT', null, {Authorization: `Bearer ${auth.token}`});
         setShouldUpdate(!shouldUpdate);
     };
 
     const handleDelete = async (id) => {
-        await request('/api/trucks/delete', 'DELETE', {truck_id: id});
+        await request(`/api/trucks/${id}`, 'DELETE', null, {Authorization: `Bearer ${auth.token}`});
         setShouldUpdate(!shouldUpdate);
+    };
+
+    const setNewName = async (value, id) => {
+        await request(`/api/trucks/${id}/name`, 'PUT', {name: value}, {Authorization: `Bearer ${auth.token}`});
+        setShouldUpdate(!shouldUpdate);
+    };
+
+    const handleChange = (item) => {
+        setItemToChange(item);
+        modalRef.current.className = 'modal__overlay modal__overlay--visible';
     };
 
     useEffect(() => {
@@ -96,9 +125,11 @@ const Trucks = ({trucks, shouldUpdate, setShouldUpdate}) => {
                 trucks={trucks}
                 handleAssign={handleAssign}
                 handleDelete={handleDelete}
+                handleChange={handleChange}
                 loading={loading}/>
             <Warning referance={warningRef} message={error}/>
             <Warning referance={successRef} message={successfulResponse}/>
+            <Modal referance={modalRef} loading={loading} setNewName={setNewName} itemToChange={itemToChange}/>
         </div>
     )
 }

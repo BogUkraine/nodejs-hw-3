@@ -56,16 +56,16 @@ const ProfileInfo = ({role}) => {
     };
 
     const changePhotoHandler = async () => {
-        console.log(fileInput.current.value);
-        // await request(
-        //     '/api/profile/photo', 
-        //     'PUT', 
-        //     {
-        //         value: fileInput.current.value,
-        //         size: fileInput.current.size, 
-        //     },
-        //     {Authorization: `Bearer ${auth.token}`}
-        // )
+        console.log(fileInput.current.files[0]);
+        await request(
+            `/api/profile/${JSON.parse(localStorage.getItem('userData')).userId}/photo`, 
+            'PUT', 
+            {
+                userPhoto: fileInput.current.files[0],
+                size: fileInput.current.size, 
+            },
+            {Authorization: `Bearer ${auth.token}`}
+        )
     };
 
     const choosePhotoHandler = () => {

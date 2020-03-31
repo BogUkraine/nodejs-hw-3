@@ -120,12 +120,12 @@ const Auth = () => {
                         className="modal__button button button--login"
                         onClick={loginHandler}
                         disabled={loading}
-                        >Log in</button>
+                        >Sign in</button>
                     <button
                         className="modal__button button button--sign"
                         onClick={registerHandler}
                         disabled={loading}
-                        >Sign in</button>
+                        >Sign up</button>
                 </div>
             </div>
             <Warning referance={warningRef} message={error}/>

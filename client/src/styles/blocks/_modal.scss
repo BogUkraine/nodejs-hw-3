@@ -1,7 +1,13 @@
 .modal {
+    position: absolute;
+    left: $modal-left;
+    top: $modal-top;
+    width: $modal-width;
+    height: $modal-height;
     display: flex;
     flex-wrap: wrap;
     background-color: $background-color-dark;
+    border-radius: 10px;
     box-shadow: 10px 10px 26px -2px rgba(0,0,0,0.75);
 
     &__header {
@@ -47,5 +53,29 @@
         align-items: center;
         width: 100%;
         padding: 0 20px;
+    }
+
+    &__title {
+        width: 100%;
+        text-align: center;
+        margin: 5px 0;
+        font-size: $font-size-large;
+    }
+
+    &__overlay {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.5);
+
+        &--hidden {
+            display: none;
+        }
+
+        &--visible {
+            display: block;
+        }
     }
 }
