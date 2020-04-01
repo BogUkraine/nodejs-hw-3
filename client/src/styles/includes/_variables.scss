@@ -29,10 +29,16 @@ $auth-modal-height: 280px;
 $modal-header-height: 50px;
 $section-unactive-color: #435571;
 $section-height: 50px;
+
 $modal-width: 400px;
 $modal-left: calc(50vw - 200px);
 $modal-top: calc(50vh - 100px);
 $modal-height: 200px;
+
+$modal-big-width: 500px;
+$modal-big-left: calc(50vw - 200px);
+$modal-big-top: calc(50vh - 300px);
+$modal-big-height: 600px;
 
 //warning 
 $warning-width: 200px;
@@ -76,3 +82,9 @@ $trucks-description-height: 340px;
 $loads-min-width: 400px;
 $loads-max-width: 600px;
 $loads__height: 520px;
+
+// profile-loads
+$profile-loads-item-min-width: 400px;
+$profile-loads-item-max-width: 600px;
+$profile-loads-item-height: 220px;
+$profile-loads-description-height: 180px;

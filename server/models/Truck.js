@@ -2,7 +2,7 @@ const {Schema, model, Types} = require('mongoose');
 
 const schema = new Schema({
   created_by: {type: Types.ObjectId, required: true, ref: 'User'},
-  assigned_to: {type: Types.ObjectId, ref: 'User', default: null},
+  is_assigned: {type: Boolean, default: false, required: true},
   name: {type: String, required: true},
   status: {type: String, required: true},
   sizes: {

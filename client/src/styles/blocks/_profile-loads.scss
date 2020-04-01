@@ -1,0 +1,41 @@
+.profile-loads {
+    &__item {
+        display: flex;
+        flex-direction: column;
+        background-color: $background-color-dark;
+        border-radius: 10px;
+        box-shadow: 10px 10px 26px -2px rgba(0,0,0,0.75);
+        min-width: $profile-loads-item-min-width;
+        max-width: $profile-loads-item-max-width;
+        height: $profile-loads-item-height;
+        padding: 10px;
+        box-sizing: border-box;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    &__description {
+        display: flex;
+        justify-content: space-between;
+        font-size: $font-size-normal;
+        height: $profile-loads-description-height;
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        flex: 1;
+    }
+
+
+    &__icon {
+        font-size: 80px;
+        margin-left: 20px;
+    }
+}

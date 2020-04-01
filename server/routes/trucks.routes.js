@@ -53,10 +53,24 @@ router.get('/', auth, async (req, res) => {
 router.put('/:id/assign', auth, async (req, res) => {
   try {
     const truckId = req.params.id;
-    const userId = req.user.userId;
 
-    await Truck.findOneAndUpdate({assigned_to: userId}, {assigned_to: null});
-    await Truck.findByIdAndUpdate(truckId, {assigned_to: userId});
+    const someTruck = await Truck.findById(truckId);
+    const isBusy = await Truck.findOne({
+      created_by: someTruck.created_by, status: 'OL',
+    });
+
+    if (isBusy) {
+      return res.status(500).json({
+        message: 'Driver is busy, you can not change any info',
+      });
+    }
+
+    await Truck.findOneAndUpdate({
+      created_by: someTruck.created_by,
+      is_assigned: true},
+    {is_assigned: false},
+    );
+    await Truck.findByIdAndUpdate(truckId, {is_assigned: true});
 
     return res.status(201).json({
       message: 'Truck was successfully assigned',
@@ -68,28 +82,51 @@ router.put('/:id/assign', auth, async (req, res) => {
   }
 });
 
-router.put('/:id/name', auth, async (req, res) => {
-  try {
-    const truckId = req.params.id;
-    const {name} = req.body;
+router.put('/:id/name',
+    auth, validate(validTruck.change, 'body'), async (req, res) => {
+      try {
+        const truckId = req.params.id;
+        const {name} = req.body;
 
-    await Truck.findByIdAndUpdate(truckId, {name});
+        const someTruck = await Truck.findById(truckId);
+        const isBusy = await Truck.findOne({
+          created_by: someTruck.created_by, status: 'OL',
+        });
 
-    return res.status(201).json({
-      message: 'Truck was successfully renamed',
+        if (isBusy) {
+          return res.status(500).json({
+            message: 'Driver is busy, you can not change any info',
+          });
+        }
+
+        await Truck.findByIdAndUpdate(truckId, {name});
+
+        return res.status(201).json({
+          message: 'Truck was successfully renamed',
+        });
+      } catch (error) {
+        return res.status(500).json({
+          message: 'Truck wasn\'t renamed', error: error,
+        });
+      }
     });
-  } catch (error) {
-    return res.status(500).json({
-      message: 'Truck wasn\'t renamed', error: error,
-    });
-  }
-});
 
 //* **** DELETE ******//
 
 router.delete('/:id', auth, async (req, res) => {
   try {
     const truckId = req.params.id;
+    const someTruck = await Truck.findById(truckId);
+    const isBusy = await Truck.findOne({
+      created_by: someTruck.created_by, status: 'OL',
+    });
+
+    if (isBusy) {
+      return res.status(500).json({
+        message: 'Driver is busy, you can not change any info',
+      });
+    }
+
     await Truck.findOneAndDelete(truckId);
 
     return res.status(201).json({message: 'Truck was successfully deleted'});

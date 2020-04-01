@@ -26,7 +26,7 @@ const TrucksMap = ({trucks, handleAssign, handleDelete, handleChange, loading}) 
             return (
                 <div className="driver-truck" key={index}>
                     <h2 className="driver-truck__title">
-                        {item.type}{item.assigned_to ? ' (Assigned)' : null}
+                        {item.type}{item.is_assigned === true ? ' (Assigned)' : null}
                     </h2>
                     <div className="driver-truck__description">
                         <i className={"fas trucks__icon--normal " + iconClass[item.type]}></i>
@@ -42,7 +42,7 @@ const TrucksMap = ({trucks, handleAssign, handleDelete, handleChange, loading}) 
                         </p>
                     </div>
                     <div className="driver-truck__buttons">
-                        {!item.assigned_to && !isBusy
+                        {!item.is_assigned && !isBusy
                         ? <>
                             <button
                                 className="driver-truck__button button"

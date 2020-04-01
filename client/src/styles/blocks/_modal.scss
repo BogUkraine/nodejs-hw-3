@@ -10,6 +10,21 @@
     border-radius: 10px;
     box-shadow: 10px 10px 26px -2px rgba(0,0,0,0.75);
 
+    &--big {
+        position: absolute;
+        left: $modal-big-left;
+        top: $modal-big-top;
+        width: $modal-big-width;
+        height: $modal-big-height;
+        display: flex;
+        flex-wrap: wrap;
+        background-color: $background-color-dark;
+        border-radius: 10px;
+        box-shadow: 10px 10px 26px -2px rgba(0,0,0,0.75);
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
     &__header {
         display: flex;
         flex-wrap: nowrap;

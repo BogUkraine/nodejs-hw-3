@@ -29,7 +29,7 @@ module.exports = {
     name: Joi.string()
         .min(3)
         .max(30)
-        .regex(/[a-zA-Z0-9]{6,30}/)
+        .regex(/[a-zA-Z0-9]{3,30}/)
         .required(),
   }),
 };

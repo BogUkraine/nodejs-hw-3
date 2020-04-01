@@ -26,7 +26,7 @@ const Modal = ({referance, loading, setNewName, itemToChange}) => {
                 <div className="modal__footer">
                     <button className="modal__button button"
                     disabled={loading}
-                    onClick={() => setNewName(changeField,itemToChange._id)}>
+                    onClick={() => setNewName(changeField, itemToChange._id)}>
                         Change
                     </button>
                     <button className="modal__button button"

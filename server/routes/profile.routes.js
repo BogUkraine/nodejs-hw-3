@@ -2,6 +2,7 @@ const {Router} = require('express');
 // eslint-disable-next-line new-cap
 const router = Router();
 const User = require('../models/User');
+const Truck = require('../models/Truck');
 const bcrypt = require('bcryptjs');
 const auth = require('../middleware/auth.middleware');
 const multer = require('multer');
@@ -60,6 +61,13 @@ router.put('/:id/password',
           return res.status(400).json({message: 'User is not authorized'});
         }
 
+        const isBusy = Truck.findOne({created_by: id, is_assigned: true});
+        if (isBusy) {
+          return res.status(500).json({
+            message: 'Driver is busy, you can not change any info',
+          });
+        }
+
         const password = req.body.password;
         const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -90,6 +98,13 @@ router.put('/:id/photo',
         const jwtId = req.user.userId;
         if (id !== jwtId) {
           return res.status(401).json({message: 'User is not authorized'});
+        }
+
+        const isBusy = Truck.findOne({created_by: id, is_assigned: true});
+        if (isBusy) {
+          return res.status(500).json({
+            message: 'Driver is busy, you can not change any info',
+          });
         }
 
         return res.status(400).json({message: 'User is not authorized'});
