@@ -20,16 +20,6 @@
         position: relative;
         width: $sidebar-photo-width;
         height: $sidebar-photo-height;
-
-        &:hover::after {
-            content: '';
-            position: absolute;
-            top: 150px;
-            right: 125px;
-            height: 1px;
-            width: 10px;
-            border: 10px solid black;
-        }
     }
 
     &__login {

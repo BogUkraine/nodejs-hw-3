@@ -4,7 +4,7 @@ const schema = new Schema({
   login: {type: String, required: true, unique: true},
   password: {type: String, required: true},
   role: {type: String, required: true},
-  photo: {type: 'Buffer'},
+  photo: {},
 });
 
 module.exports = model('User', schema);

@@ -6,22 +6,10 @@ const Truck = require('../models/Truck');
 const bcrypt = require('bcryptjs');
 const auth = require('../middleware/auth.middleware');
 const multer = require('multer');
+const AWS = require('aws-sdk');
 
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, './uploads/');
-  },
-  filename: function(req, file, cb) {
-    cb(null, new Date().toISOString() + file.originalname);
-  },
-});
-
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 1024 * 1024 * 5,
-  },
-});
+const storage = multer.memoryStorage();
+const upload = multer({storage: storage});
 
 const validate = require('../middleware/valid.middleware');
 const validProfile = require('../validation/profile.validation');
@@ -36,12 +24,11 @@ router.get('/:id', auth, async (req, res) => {
       return res.status(400).json({message: 'User is not authorized'});
     }
 
-    User.findById(id, (err) => {
-      if (err) {
-        return res.status(500).json({message: 'Can not get profile', err});
-      }
-      return res.status(200).json({message: 'Profile was got'});
-    });
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(500).json({message: 'User does not exist'});
+    }
+    return res.status(200).json(user);
   } catch (error) {
     return res.status(500).json({
       message: 'Can not get profile', error: error,
@@ -61,7 +48,7 @@ router.put('/:id/password',
           return res.status(400).json({message: 'User is not authorized'});
         }
 
-        const isBusy = Truck.findOne({created_by: id, is_assigned: true});
+        const isBusy = await Truck.findOne({created_by: id, status: 'OL'});
         if (isBusy) {
           return res.status(500).json({
             message: 'Driver is busy, you can not change any info',
@@ -71,17 +58,11 @@ router.put('/:id/password',
         const password = req.body.password;
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        User.findByIdAndUpdate(id, {
+        await User.findByIdAndUpdate(id, {
           $set: {password: hashedPassword},
-        }, (err) => {
-          if (err) {
-            return res.status(500).json({
-              message: 'Profile data wasn\'t changed', err,
-            });
-          }
-          return res.status(200).json({
-            message: 'Profile data was successfully changed',
-          });
+        });
+        return res.status(200).json({
+          message: 'Profile data was successfully changed',
         });
       } catch (error) {
         return res.status(500).json({
@@ -91,23 +72,54 @@ router.put('/:id/password',
     });
 
 router.put('/:id/photo',
-    auth, upload.single('userPhoto'), async (req, res) => {
+    auth, upload.single('body'), async (req, res) => {
       try {
-        console.log(req.file, req.body.userPhoto);
+        console.log(req.body);
         const id = req.params.id;
         const jwtId = req.user.userId;
         if (id !== jwtId) {
           return res.status(401).json({message: 'User is not authorized'});
         }
 
-        const isBusy = Truck.findOne({created_by: id, is_assigned: true});
+        const isBusy = await Truck.findOne({created_by: id, status: 'OL'});
         if (isBusy) {
           return res.status(500).json({
             message: 'Driver is busy, you can not change any info',
           });
         }
 
-        return res.status(400).json({message: 'User is not authorized'});
+        const file = req.body.userPhoto;
+        console.log('file is', file);
+        const s3FileURL = config.get('AWS_Uploaded_File_URL_LINK');
+
+        const s3bucket = new AWS.S3({
+          accessKeyId: config.get('AWS_ACCESS_KEY_ID'),
+          secretAccessKey: config.get('AWS_SECRET_ACCESS_KEY'),
+          region: config.get('AWS_REGION'),
+        });
+
+        const params = {
+          Bucket: config.get('AWS_BUCKET_NAME'),
+          Key: file.originalname,
+          Body: file.buffer,
+          ContentType: file.mimetype,
+          ACL: 'public-read',
+        };
+
+        s3bucket.upload(params, async (err, data) => {
+          if (err) {
+            res.status(500).json({error: err});
+          } else {
+            res.send({data});
+            const newFileUploaded = {
+              fileLink: s3FileURL + file.originalname,
+              s3_key: params.Key,
+            };
+            await User.findByIdAndUpdate(id, {photo: newFileUploaded});
+          }
+        });
+
+        return res.status(200).json({message: 'Photo was changed'});
       } catch (error) {
         return res.status(500).json({
           message: 'Profile data wasn\'t changed', error: error,
@@ -127,7 +139,7 @@ router.delete('/:id', auth, async (req, res) => {
       return res.status(400).json({message: 'User is not authorized'});
     }
 
-    User.findByIdAndDelete(id, (err) => {
+    await User.findByIdAndDelete(id, (err) => {
       if (err) {
         return res.status(500).json({message: 'User wasn\'t deleted', err});
       }

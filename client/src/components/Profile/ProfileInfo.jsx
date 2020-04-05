@@ -21,6 +21,7 @@ const ProfileInfo = ({role}) => {
     const auth = useContext(AuthContext);
     const { loading, request, error, clearError, successfulResponse, clearSuccessfulResponse } = useHttp();
     const [ form, setForm ] = useState({password: ''});
+    const [ userData, setUserData ] = useState(null);
 
     const handleForm = event => {
         setForm({password: event.target.value});
@@ -60,10 +61,7 @@ const ProfileInfo = ({role}) => {
         await request(
             `/api/profile/${JSON.parse(localStorage.getItem('userData')).userId}/photo`, 
             'PUT', 
-            {
-                userPhoto: fileInput.current.files[0],
-                size: fileInput.current.size, 
-            },
+            fileInput.current.files[0],
             {Authorization: `Bearer ${auth.token}`}
         )
     };
@@ -73,6 +71,15 @@ const ProfileInfo = ({role}) => {
         buttonChangePassword.current.className = 'sidebar__changer button sidebar__changer--invisible';
         modalPhoto.current.className = 'sidebar__modal sidebar__modal--visible';
         modalPassword.current.className = 'sidebar__modal sidebar__modal--invisible';
+    }
+
+    const getPhoto = async () => {
+        const data = await request(
+            `/api/profile/${JSON.parse(localStorage.getItem('userData')).userId}`,
+            'GET',
+            null,
+            {Authorization: `Bearer ${auth.token}`});
+        setUserData(data);
     }
 
     useEffect(() => {
@@ -95,9 +102,13 @@ const ProfileInfo = ({role}) => {
         }
     }, [successfulResponse, clearSuccessfulResponse]);
 
+    useEffect(() => {
+        getPhoto();
+    }, [])
+
     return (
         <div className="profile__sidebar sidebar">
-            <SidebarMain />
+            <SidebarMain userData={userData}/>
             <div className="sidebar__container">
                 <SidebarMainButtons
                     changePasswordHandler={changePasswordHandler}

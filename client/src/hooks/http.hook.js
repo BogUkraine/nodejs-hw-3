@@ -18,7 +18,7 @@ const useHttp = () => {
             if(!response.ok) {
                 throw new Error(data.message || 'Something went wrong');
             }
-            setSuccessfulResponse(data.message);
+            setSuccessfulResponse(data ? null : data.message);
             setLoading(false);
             return data;
         }

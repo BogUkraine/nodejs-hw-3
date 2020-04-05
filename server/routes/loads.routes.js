@@ -112,32 +112,20 @@ router.put('/:id/status',
     auth, async (req, res) => {
       try {
         const loadId = req.params.id;
-        const {dimensions, payload} = req.body;
 
         const load = await Load.findById(loadId);
         if (!load) {
           return res.status(500).json({message: 'Load does not exist'});
         }
 
-        const fittingTrucks = await Truck.find({
-          status: 'IS',
-          is_assigned: true,
-        });
-
-        if (!fittingTrucks) {
-          return res.status(500).json({
-            message: 'There are no fitting trucks at this moment',
-          });
-        }
-
-        const fittingTruck = fittingTrucks.find((item) => {
-          return (
-            item.sizes.width >= dimensions.width &&
-            item.sizes.height >= dimensions.height &&
-            item.sizes.length >= dimensions.length &&
-            item.weight >= payload
-          );
-        });
+        const fittingTruck = await Truck
+            .where('is_assigned').equals(true)
+            .where('status').equals('IS')
+            .where('weight').gt(load.payload)
+            .where('sizes.width').gt(load.dimensions.width)
+            .where('sizes.length').gt(load.dimensions.length)
+            .where('sizes.height').gt(load.dimensions.height)
+            .findOne();
 
         if (!fittingTruck) {
           return res.status(500).json({

@@ -21,7 +21,8 @@ router.post('/register', validate(userValid.register, 'body'),
         }
 
         const hashedPassword = await bcrypt.hash(password, 12);
-        const user = new User({login, password: hashedPassword, role});
+        const user = new User({login,
+          password: hashedPassword, role, photo: null});
         await user.save();
 
         return res.status(201).json({
