@@ -32,18 +32,3 @@ async function start() {
 }
 
 start();
-
-/*
-1. how to set photo;
-2. how to link truck/user;
-3. assigned to type of field (truck);
-5. who can use truck;
-6. Can driver create more than 1 type of each vehicle;
-7. how i need to control load status?
-8. Logging of requsts. || DEBUG /
-9. how to accept delete all, put all. Which role of authoriation?
-10. Do I need to validate id?
-11.
-When change document, do I need to create new
- instance of model or simple rewrite fields?
-*/

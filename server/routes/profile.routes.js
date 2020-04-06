@@ -16,6 +16,20 @@ const validProfile = require('../validation/profile.validation');
 
 //* **** GET ******//
 
+/**
+ * @api {get} /api/profile/:id get user info
+ * @apiName GetProfile
+ * @apiGroup profiles
+ *
+ * @apiHeader {String} authorization User's jwt from local storage.
+ *
+ * @apiSuccess {Object} user User data.
+ *
+ * @apiError UserIsntAuthorized User is not authorized.
+ * @apiError UserDoesntExist User doesn't exist.
+ * @apiError CantGetUser Can not get profile.
+ */
+
 router.get('/:id', auth, async (req, res) => {
   try {
     const id = req.params.id;
@@ -37,6 +51,21 @@ router.get('/:id', auth, async (req, res) => {
 });
 
 //* **** PUT ******//
+
+/**
+ * @api {put} /api/profile/:id/password change user password
+ * @apiName PutProfile
+ * @apiGroup profiles
+ *
+ * @apiHeader {String} authorization User's jwt from local storage.
+ * @apiParam {String} password new password.
+ *
+ * @apiSuccess {String} message Profile data was successfully changed.
+ *
+ * @apiError UserIsntAuthorized User is not authorized.
+ * @apiError DriverIsBusy Driver is busy, you can not change any info.
+ * @apiError ProfileWasntChanged Profile data wasn't changed.
+ */
 
 router.put('/:id/password',
     auth, validate(validProfile.password, 'body'),
@@ -70,6 +99,21 @@ router.put('/:id/password',
         });
       }
     });
+
+/**
+ * @api {put} /api/profile/:id/photo change user photo
+ * @apiName PutProfile
+ * @apiGroup profiles
+ *
+ * @apiHeader {String} authorization User's jwt from local storage.
+ * @apiParam {Buffer} photo photo.
+ *
+ * @apiSuccess {String} message Photo was changed.
+ *
+ * @apiError UserIsntAuthorized User is not authorized.
+ * @apiError DriverIsBusy Driver is busy, you can not change any info.
+ * @apiError ProfileWasntChanged Profile data wasn't changed.
+ */
 
 router.put('/:id/photo',
     auth, upload.single('body'), async (req, res) => {
@@ -130,6 +174,19 @@ router.put('/:id/photo',
 //* **** POST ******//
 
 //* **** DELETE ******//
+
+/**
+ * @api {delete} /api/profile/:id delete user profile
+ * @apiName DeleteProfile
+ * @apiGroup profiles
+ *
+ * @apiHeader {String} authorization User's jwt from local storage.
+ *
+ * @apiSuccess {String} message User was successfully deleted.
+ *
+ * @apiError UserIsntAuthorized User is not authorized.
+ * @apiError ProfileWasntChanged Profile data wasn't deleted.
+ */
 
 router.delete('/:id', auth, async (req, res) => {
   try {

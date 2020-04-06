@@ -10,6 +10,27 @@ const validLoad = require('../validation/load.validation');
 
 //* **** POST ******//
 
+/**
+ * @api {post} /api/loads/ create load.
+ * @apiName PostLoad
+ * @apiGroup loads
+ *
+ * @apiHeader {String} authorization User's jwt from local storage.
+ * @apiParam {Object} dimensions load's dimensions.
+ * @apiParam {Number} payload load's payload.
+ * @apiParam {Number} dimensions.width load's width.
+ * @apiParam {Number} dimensions.height load's height.
+ * @apiParam {Number} dimensions.length load's length.
+ * @apiParam {String{10...}} [message] load's additional message.
+ * @apiParam {String} status='NEW' load's additional message.
+ * @apiParam {String} state='Waiting' load's additional message.
+ *
+ * @apiSuccess {String} message Load was successfully created.
+ *
+ * @apiError UserIsntAuthorized User is not authorized.
+ * @apiError LoadWasntCreated Load wasn\'t created.
+ */
+
 router.post('/', auth, validate(validLoad.create, 'body'), async (req, res) => {
   try {
     const id = req.user.userId;
@@ -43,6 +64,19 @@ router.post('/', auth, validate(validLoad.create, 'body'), async (req, res) => {
 
 //* **** GET ******//
 
+/**
+ * @api {get} /api/loads/shipper get shipper's loads.
+ * @apiName GetLoads
+ * @apiGroup loads
+ *
+ * @apiHeader {String} authorization User's jwt from local storage.
+ *
+ * @apiSuccess {Object[]} loads shipper's loads.
+ *
+ * @apiError UserIsntAuthorized User is not authorized.
+ * @apiError LoadsWerntFetched Loads were not fetched.
+ */
+
 router.get('/shipper',
     auth, async (req, res) => {
       try {
@@ -57,6 +91,19 @@ router.get('/shipper',
         });
       }
     });
+
+/**
+ * @api {get} /api/loads/driver get driver's loads.
+ * @apiName GetLoads
+ * @apiGroup loads
+ *
+ * @apiHeader {String} authorization User's jwt from local storage.
+ *
+ * @apiSuccess {Object[]} loads driver's loads.
+ *
+ * @apiError UserIsntAuthorized User is not authorized.
+ * @apiError LoadsWerntFetched Loads were not fetched.
+ */
 
 router.get('/driver',
     auth, async (req, res) => {
@@ -73,6 +120,26 @@ router.get('/driver',
     });
 
 //* **** PUT ******//
+
+/**
+ * @api {put} /api/loads/:id/data change load info
+ * @apiName PutLoad
+ * @apiGroup loads
+ *
+ * @apiHeader {String} authorization User's jwt from local storage.
+ * @apiParam {Object} dimensions load's dimensions.
+ * @apiParam {Number} payload load's payload.
+ * @apiParam {Number} dimensions.width load's width.
+ * @apiParam {Number} dimensions.height load's height.
+ * @apiParam {Number} dimensions.length load's length.
+ * @apiParam {String{10...}} [message] load's additional message.
+ *
+ * @apiSuccess {String} message Load was successfully changed.
+ *
+ * @apiError UserIsntAuthorized User is not authorized.
+ * @apiError LoadWasntChanged Load wasn't changed.
+ * @apiError LoadDoesntExist Load doesn't exist.
+ */
 
 router.put('/:id/data',
     auth, validate(validLoad.change, 'body'), async (req, res) => {
@@ -107,6 +174,21 @@ router.put('/:id/data',
         });
       }
     });
+
+/**
+ * @api {put} /api/loads/:id/status send load to system to find suitable truck
+ * @apiName PutLoad
+ * @apiGroup loads
+ *
+ * @apiHeader {String} authorization User's jwt from local storage.
+ *
+ * @apiSuccess {String} message Load was successfully assigned.
+ *
+ * @apiError UserIsntAuthorized User is not authorized.
+ * @apiError LoadWasntAssigned Load wasn't assigned.
+ * @apiError LoadDoesntExist Load doesn't exist.
+ * @apiError TruckDoesntExist There are no fitting trucks at this moment.
+ */
 
 router.put('/:id/status',
     auth, async (req, res) => {
@@ -161,6 +243,21 @@ router.put('/:id/status',
       }
     });
 
+/**
+ * @api {put} /api/loads/:id/shipped driver had operated with load and shippedit
+ * @apiName PutLoad
+ * @apiGroup loads
+ *
+ * @apiHeader {String} authorization User's jwt from local storage.
+ *
+ * @apiSuccess {String} message Load was successfully shipped.
+ *
+ * @apiError UserIsntAuthorized User is not authorized.
+ * @apiError LoadWasntAssigned Load wasn't shipped.
+ * @apiError LoadDoesntExist Load doesn't exist.
+ * @apiError TruckDoesntExist Truck was not found.
+ */
+
 router.put('/:id/shipped',
     auth, async (req, res) => {
       try {
@@ -175,7 +272,7 @@ router.put('/:id/shipped',
           created_by: item.assigned_to, is_assigned: true,
         });
         if (!truck) {
-          return res.status(500).json({message: 'Truck does not found'});
+          return res.status(500).json({message: 'Truck was not found'});
         }
         const logs = item.logs;
 
@@ -208,6 +305,19 @@ router.put('/:id/shipped',
     });
 
 //* **** DELETE ******//
+
+/**
+ * @api {put} /api/loads/:id deleting load by id
+ * @apiName DeleteLoad
+ * @apiGroup loads
+ *
+ * @apiHeader {String} authorization User's jwt from local storage.
+ *
+ * @apiSuccess {String} message Load was successfully deleted.
+ *
+ * @apiError UserIsntAuthorized User is not authorized.
+ * @apiError LoadWasntAssigned Load wasn't deleted.
+ */
 
 router.delete('/:id',
     auth, async (req, res) => {

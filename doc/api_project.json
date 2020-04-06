@@ -1,0 +1,14 @@
+{
+  "name": "nodejs-hw-3",
+  "version": "1.0.0",
+  "description": "",
+  "sampleUrl": false,
+  "defaultVersion": "0.0.0",
+  "apidoc": "0.3.0",
+  "generator": {
+    "name": "apidoc",
+    "time": "2020-04-06T15:20:33.881Z",
+    "url": "http://apidocjs.com",
+    "version": "0.20.1"
+  }
+}

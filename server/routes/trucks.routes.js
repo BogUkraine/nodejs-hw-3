@@ -9,6 +9,26 @@ const validTruck = require('../validation/truck.validation');
 
 //* **** POST ******//
 
+/**
+ * @api {post} /api/trucks/:id create truck by user id.
+ * @apiName PostTruck
+ * @apiGroup trucks
+ *
+ * @apiHeader {String} authorization User's jwt from local storage.
+ *
+ * @apiParam {Object} sizes truck sizes.
+ * @apiParam {Number} weight truck can carry this weight.
+ * @apiParam {Number} sizes.width truck width.
+ * @apiParam {Number} sizes.height truck height.
+ * @apiParam {Number} sizes.length truck length.
+ * @apiParam {String} name truck name.
+ *
+ * @apiSuccess {String} message Truck was successfully added.
+ *
+ * @apiError UserIsntAuthorized User is not authorized.
+ * @apiError TruckWasntCreated Truck wasn't created.
+ */
+
 router.post('/:id',
     auth, validate(validTruck.create, 'body'), async (req, res) => {
       try {
@@ -36,6 +56,19 @@ router.post('/:id',
 
 //* **** GET ******//
 
+/**
+ * @api {get} /api/trucks/ get trucks.
+ * @apiName GetTruck
+ * @apiGroup trucks
+ *
+ * @apiHeader {String} authorization User's jwt from local storage.
+ *
+ * @apiSuccess {Object[]} trucks user trucks.
+ *
+ * @apiError UserIsntAuthorized User is not authorized.
+ * @apiError TrucksWerntFetched Trucks weren't fetched.
+ */
+
 router.get('/', auth, async (req, res) => {
   try {
     const id = req.user.userId;
@@ -44,11 +77,27 @@ router.get('/', auth, async (req, res) => {
 
     return res.status(201).json(trucks);
   } catch (error) {
-    return res.status(500).json({message: 'Truck wasn\'t added', error: error});
+    return res.status(500).json(
+        {message: 'Trucks were not fetched', error: error},
+    );
   }
 });
 
 //* **** PUT ******//
+
+/**
+ * @api {put} /api/trucks/:id/assign assign truck by truck id.
+ * @apiName PutTruck
+ * @apiGroup trucks
+ *
+ * @apiHeader {String} authorization User's jwt from local storage.
+ *
+ * @apiSuccess {String} message Truck was successfully assigned.
+ *
+ * @apiError UserIsntAuthorized User is not authorized.
+ * @apiError DriverIsBusy Driver is busy, you can not change any info.
+ * @apiError TruckWasntAssigned Truck wasn't assigned.
+ */
 
 router.put('/:id/assign', auth, async (req, res) => {
   try {
@@ -82,6 +131,22 @@ router.put('/:id/assign', auth, async (req, res) => {
   }
 });
 
+/**
+ * @api {put} /api/trucks/:id/name change truck name by truck id.
+ * @apiName PutTruck
+ * @apiGroup trucks
+ *
+ * @apiHeader {String} authorization User's jwt from local storage.
+ *
+ * @apiParam {String} name new truck name.
+ *
+ * @apiSuccess {String} message Truck was successfully renamed.
+ *
+ * @apiError UserIsntAuthorized User is not authorized.
+ * @apiError DriverIsBusy Driver is busy, you can not change any info.
+ * @apiError TruckWasntRenamed Truck wasn't renamed.
+ */
+
 router.put('/:id/name',
     auth, validate(validTruck.change, 'body'), async (req, res) => {
       try {
@@ -113,6 +178,20 @@ router.put('/:id/name',
 
 //* **** DELETE ******//
 
+/**
+ * @api {delete} /api/trucks/:id delete truck by truck id.
+ * @apiName DeleteTruck
+ * @apiGroup trucks
+ *
+ * @apiHeader {String} authorization User's jwt from local storage.
+ *
+ * @apiSuccess {String} message Truck was successfully deleted.
+ *
+ * @apiError UserIsntAuthorized User is not authorized.
+ * @apiError DriverIsBusy Driver is busy, you can not change any info.
+ * @apiError TruckWasntDeleted Truck wasn't deleted.
+ */
+
 router.delete('/:id', auth, async (req, res) => {
   try {
     const truckId = req.params.id;
@@ -131,7 +210,9 @@ router.delete('/:id', auth, async (req, res) => {
 
     return res.status(201).json({message: 'Truck was successfully deleted'});
   } catch (error) {
-    return res.status(500).json({message: 'Truck wasn\'t added', error: error});
+    return res.status(500).json(
+        {message: 'Truck wasn\'t deleted', error: error},
+    );
   }
 });
 

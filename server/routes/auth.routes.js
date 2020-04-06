@@ -11,6 +11,21 @@ const User = require('../models/User');
 const validate = require('../middleware/valid.middleware');
 const userValid = require('../validation/auth.validation');
 
+/**
+ * @api {post} /api/auth/register register user
+ * @apiName PostUser
+ * @apiGroup auth
+ *
+ * @apiParam {String} login User's login.
+ * @apiParam {String} password User's password.
+ * @apiParam {String} role User's role.
+ *
+ * @apiSuccess {String} message User was successfully registered.
+ *
+ * @apiError UserAlreadyExists User already exists.
+ * @apiError UserWasntRegistered User was not registered.
+ */
+
 router.post('/register', validate(userValid.register, 'body'),
     async (req, res) => {
       try {
@@ -35,6 +50,25 @@ router.post('/register', validate(userValid.register, 'body'),
       };
     });
 
+/**
+ * @api {post} /api/auth/login login user
+ * @apiName PostUser
+ * @apiGroup auth
+ *
+ * @apiParam {String} login User's login.
+ * @apiParam {String} password User's password.
+ * @apiParam {String} role User's role.
+ *
+ * @apiSuccess {String} token User jwt.
+ * @apiSuccess {String} userId User unique id.
+ * @apiSuccess {String} login User login.
+ * @apiSuccess {String} role User role: shipper or driver.
+ *
+ * @apiError UserDoesntExist This user doesn't exist.
+ * @apiError UserWrongPassword Wrong password.
+ * @apiError UserWasntLogined User wasn't logined.
+ */
+
 router.post('/login', validate(userValid.login, 'body'), async (req, res) => {
   try {
     const {login, password, role} = req.body;
@@ -58,7 +92,7 @@ router.post('/login', validate(userValid.login, 'body'), async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
-      message: 'User wasn\'t registered', error: error,
+      message: 'User wasn\'t logined', error: error,
     });
   };
 });
